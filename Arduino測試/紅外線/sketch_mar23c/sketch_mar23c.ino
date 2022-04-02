@@ -126,6 +126,8 @@ long input;
 int now=0;
 int dur=1000;
 const int tonePin=8;
+//IRsend irsend;
+//decode_results results;   
 
 
 
@@ -135,11 +137,17 @@ void setup() {
     Serial.println(F("Enabling IRin"));
    // irrecv.begin(IR_RECEIVE_PIN,ENABLE_LED_FEEDBACK);
     IrReceiver.begin(IR_RECEIVE_PIN,ENABLE_LED_FEEDBACK);
+    //irsend.begin(3,ENABLE_LED_FEEDBACK);
     Serial.print(F("Ready to receive IR signals at pin "));
     Serial.println(IR_RECEIVE_PIN); 
     delay(1000);
 }
 void loop() {
+
+         // irsend.sendSony(0xFF38C7, 16); 
+         // delay(500);
+        //irsend.sendNEC(8,16);
+         
 
         
          
@@ -148,7 +156,10 @@ void loop() {
           input=IrReceiver.decodedIRData.command,HEX;         
           IrReceiver.resume();
         if(input!=0 && input !=NULL && now!=input){
-         Serial.println("input="+String(input));
+         Serial.println("input="+String(input)+"/"+IrReceiver.decodedIRData.decodedRawData);
+          //IrReceiver.printIRResultAsCVariables(&Serial);  // Output address and data as source code variables
+           //IrReceiver.compensateAndPrintIRResultAsPronto(&Serial);
+           IrReceiver.printIRResultShort(&Serial); // optional use new print version
          now=input;
          noTone(tonePin);//8號腳位  
          switch (input){
@@ -182,6 +193,7 @@ void loop() {
               
 
           }    
+          delay(500);
              
          // now=(now+1)%7;
          
