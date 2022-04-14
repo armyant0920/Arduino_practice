@@ -118,6 +118,7 @@ void loop() {
 #include <Arduino.h>
 #include <IRremote.h>
 #include "pitches.h"
+                       
 const byte IR_RECEIVE_PIN=11;
 //IRrecv irrecv(IR_RECEIVE_PIN); 
 
@@ -125,7 +126,9 @@ const byte IR_RECEIVE_PIN=11;
 long input;
 int now=0;
 int dur=1000;
+      
 const int tonePin=8;
+           
 //IRsend irsend;
 //decode_results results;   
 
@@ -133,6 +136,9 @@ const int tonePin=8;
 
 int song[]={NOTE_C4,NOTE_D4,NOTE_E4,NOTE_F4,NOTE_G4,NOTE_A4,NOTE_B4,NOTE_C5};
 void setup() {
+  
+                                                                                
+  
     Serial.begin(115200);
     Serial.println(F("Enabling IRin"));
    // irrecv.begin(IR_RECEIVE_PIN,ENABLE_LED_FEEDBACK);
@@ -188,6 +194,19 @@ void loop() {
            case 28:
               tone(tonePin,song[7]);//8號腳位
               break;   
+           
+            
+    
+                 
+
+      
+       
+          
+             
+             
+    
+                 
+             
            default:
               break;     
               
