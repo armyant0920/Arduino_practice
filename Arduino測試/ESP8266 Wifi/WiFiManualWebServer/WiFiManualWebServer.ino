@@ -32,7 +32,7 @@ void setup() {
 
   // Connect to WiFi network
   Serial.println();
-  Serial.println();
+
   Serial.print(F("Connecting to "));
   Serial.println(ssid);
 

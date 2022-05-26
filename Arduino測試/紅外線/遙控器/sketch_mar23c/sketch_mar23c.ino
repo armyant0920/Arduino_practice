@@ -116,7 +116,8 @@ void loop() {
 
 
 #include <Arduino.h>
-#include <IRremote.h>
+
+
 #include "pitches.h"
                        
 const byte IR_RECEIVE_PIN=11;
@@ -142,6 +143,7 @@ void setup() {
     Serial.begin(115200);
     Serial.println(F("Enabling IRin"));
    // irrecv.begin(IR_RECEIVE_PIN,ENABLE_LED_FEEDBACK);
+   
     IrReceiver.begin(IR_RECEIVE_PIN,ENABLE_LED_FEEDBACK);
     //irsend.begin(3,ENABLE_LED_FEEDBACK);
     Serial.print(F("Ready to receive IR signals at pin "));

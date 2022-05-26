@@ -27,26 +27,44 @@ LiquidCrystal_PCF8574 lcd(0x27);  // 設定i2c位址，一般情況就是0x27和
 
 const String text="this is a very very long and boreing string that can not fully shown on LCD";
 const int maxLen=16;
+int bright=100;
+
+
 int line2_index;
 
 void setup()
 {
+  Serial.begin(9600);
   lcd.begin(16, 2); // 初始化LCD
   //lcd.begin(20, 4); // 如果是20x4的LCD就是用這行
   
-  lcd.setBacklight(255);
+  lcd.setBacklight(bright);
   lcd.clear();
   lcd.setCursor(0, 0);  //設定游標位置 (字,行)
   lcd.print("*~ first line.");
   lcd.setCursor(0, 1);
   lcd.print("~* second line.");
-  delay(5000);//先停止5秒
+  
+  Serial.println("wait..");
+  delay(2000);//先停止2秒
+  Serial.println("start!");
+  
 } 
 
 void loop()
 {
+  
+ 
+  /*lcd.setCursor(0,1);
+  lcd.print(text);
+  lcd.autoscroll();
+  delay(300);*/
  line2_index=0;
  while(line2_index<text.length()){
+   bright= map(analogRead(A0),0,1023,0,255);
+   
+   Serial.println(bright);
+   lcd.setBacklight(bright);
 
     if(line2_index+maxLen>text.length()){
       //如果剩下的文字不足螢幕長度了,固定先把第二行蓋成空白
@@ -59,12 +77,11 @@ void loop()
         for (int i=pos;i<maxLen;i++){
             lcd.setCursor(maxLen-i,1);
             lcd.print(" "); */        
-          }
+   }
     lcd.setCursor(0,1);//移動到第二行開頭
-    lcd.print(text.substring(line2_index,min(line2_index+maxLen,text.length())));
-      
+    lcd.print(text.substring(line2_index,min(line2_index+maxLen,text.length())));    
     line2_index++;
-    delay(200);
+    delay(300);
   }
   lcd.setCursor(0, 1);
   lcd.print("~* second line.");
