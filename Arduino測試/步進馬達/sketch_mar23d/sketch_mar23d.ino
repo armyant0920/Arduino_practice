@@ -41,8 +41,8 @@ void loop(){
     stepper.run();
     
 if(stepper.stepsToGo()==0){
-    delay(500);
-    direction*=-1;
+    /*delay(500);
+    direction*=-1;*/
     stepper.move(4096*direction);
     
     

@@ -15,20 +15,24 @@
 #endif
 
 
-const char* ssid = "Galaxy A52s 5G425B";//STASSID;
-const char* password = "armyant0920";//STAPSK;
+//const char* ssid = "Galaxy A52s 5G425B";//STASSID;
+//const char* password = "armyant0920";//STAPSK;
+
+const char* ssid = "Home-2.4G";//STASSID;
+const char* password = "home3258440";//STAPSK;
+
 
 // Create an instance of the server
 // specify the port to listen on as an argument
-WiFiServer server(80);
+WiFiServer server(1100);
 
 void setup() {
   Serial.begin(9600);
 
   // prepare LED
   //pinMode(13, OUTPUT);
-  pinMode(13, OUTPUT);
-  digitalWrite(13, 0);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, 0);
 
   // Connect to WiFi network
   Serial.println();
@@ -60,6 +64,7 @@ void loop() {
   if (!client) {
     return;
   }
+  
   Serial.println(F("new client"));
 
   client.setTimeout(5000); // default is 1000
@@ -68,38 +73,48 @@ void loop() {
   String req = client.readStringUntil('\r');
   Serial.println(F("request: "));
   Serial.println(req);
+  client.flush();
 
   // Match the request
   int val;
   if (req.indexOf(F("/gpio/0")) != -1) {
     val = 0;
+    Serial.println("input=0");
   } else if (req.indexOf(F("/gpio/1")) != -1) {
     val = 1;
+    Serial.println("input=1");
   } else {
     Serial.println(F("invalid request"));
-    val = digitalRead(13);
+    client.stop();
+    return;
+    //val = digitalRead(13);
+    //Serial.println("input invalid");
+    
   }
 
   // Set LED according to the request
-  digitalWrite(13, val);
+  digitalWrite(LED_BUILTIN, val);
+  client.flush();
 
   // read/ignore the rest of the request
   // do not client.flush(): it is for output only, see below
-  while (client.available()) {
+  /*while (client.available()) {
     // byte by byte is not very efficient
     client.read();
-  }
+  }*/
 
   // Send the response to the client
   // it is OK for multiple small client.print/write,
   // because nagle algorithm will group them into one single packet
-  client.print(F("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\nGPIO is now "));
+  client.print(F("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html><head><meta charset='UTF-8'><style>td{border:1px solid;font-size:XX-large;text-align:center;}</style></head>\r\nGPIO is now "));
   client.print((val) ? F("high") : F("low"));
   client.print(F("<br><br>Click <a href='http://"));
   client.print(WiFi.localIP());
   client.print(F("/gpio/1'>here</a> to switch LED GPIO on, or <a href='http://"));
   client.print(WiFi.localIP());
-  client.print(F("/gpio/0'>here</a> to switch LED GPIO off.</html>"));
+  client.print(F("/gpio/0'>here</a> to switch LED GPIO off."));
+  client.print(F("<div style='width:100vw;height:100vh;'><table id='table' style='width:100%;height:100%;border:2px solid;border-collapse:collapse'><tr><td>X</td><td>U</td><td>X</td></tr><tr><td>L</td><td>S</td><td>R</td></tr><tr><td>X</td><td>D</td><td>X</td></tr></table>"));
+  client.print(F("</html>"));
 
   // The client will actually be *flushed* then disconnected
   // when the function returns and 'client' object is destroyed (out-of-scope)

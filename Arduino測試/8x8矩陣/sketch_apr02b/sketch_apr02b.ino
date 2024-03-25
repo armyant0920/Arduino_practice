@@ -42,7 +42,8 @@ void loop() {
       for(int j=0;j<4;j++){
           //0為col,1為row
           digitalWrite(arr[1][i],HIGH);
-          digitalWrite(arr[0][j],LOW);              
+          digitalWrite(arr[0][j],LOW);          
+              
         }
         
         delay(2000);

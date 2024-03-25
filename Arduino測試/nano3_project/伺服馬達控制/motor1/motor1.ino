@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-#define SERVO_PIN 2//伺服馬達控制訊號接腳
+#define SERVO_PIN 8//伺服馬達控制訊號接腳
 
 int state=0;
 bool lockSwitch=false;//伺服馬達狀態
@@ -55,7 +55,7 @@ void turn(int input){
 
   
 
-     delay(15);   //等馬達轉到定位                
+     delay(1000);   //等馬達轉到定位                
   }
   
 
